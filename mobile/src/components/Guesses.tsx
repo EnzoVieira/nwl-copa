@@ -5,12 +5,14 @@ import { api } from "../services/api"
 
 import { Game, GameProps } from "./Game"
 import { Loading } from "./Loading"
+import { EmptyMyPoolList } from "./EmptyMyPoolList"
 
 interface Props {
   poolId: string
+  code: string
 }
 
-export function Guesses({ poolId }: Props) {
+export function Guesses({ poolId, code }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [games, setGames] = useState<GameProps[]>([])
   const [firstTeamPoints, setFirstTeamPoints] = useState("")
@@ -80,7 +82,7 @@ export function Guesses({ poolId }: Props) {
 
   return (
     <FlatList
-      data={games}
+      data={[]}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <Game
@@ -90,6 +92,8 @@ export function Guesses({ poolId }: Props) {
           onGuessConfirm={() => handleGuessConfirm(item.id)}
         />
       )}
+      ListEmptyComponent={() => <EmptyMyPoolList code={code} />}
+      _contentContainerStyle={{ pb: 10 }}
     />
   )
 }

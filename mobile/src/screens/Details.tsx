@@ -8,9 +8,10 @@ import { Loading } from "../components/Loading"
 import { PoolCardProps } from "../components/PoolCard"
 import { PoolHeader } from "../components/PoolHeader"
 import { EmptyMyPoolList } from "../components/EmptyMyPoolList"
+import { Option } from "../components/Option"
+import { Guesses } from "../components/Guesses"
 
 import { api } from "../services/api"
-import { Option } from "../components/Option"
 
 interface RouteParams {
   id: string
@@ -70,7 +71,7 @@ export function Details() {
         onShare={handleCodeShare}
       />
 
-      {poolDetails._count?.participants < 0 ? (
+      {poolDetails._count?.participants > 0 ? (
         <VStack px={5} flex={1}>
           <PoolHeader data={poolDetails} />
 
@@ -80,12 +81,15 @@ export function Details() {
               isSelected={optionSelected === "GUESSES"}
               onPress={() => setOptionSelected("GUESSES")}
             />
+
             <Option
               title="Ranking do grupo"
               isSelected={optionSelected === "RANKING"}
               onPress={() => setOptionSelected("RANKING")}
             />
           </HStack>
+
+          <Guesses poolId={poolDetails.id} />
         </VStack>
       ) : (
         <EmptyMyPoolList code={poolDetails.code} />
